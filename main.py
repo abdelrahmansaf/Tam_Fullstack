@@ -4,10 +4,6 @@ import sys
 from flask import render_template
 import logging
 
-<<<<<<< HEAD
-
-=======
->>>>>>> f2c20ae7d9e624647c00e2d7b8fa8caaae095378
 def load_csv(path, cursor):
     """ This function load and read the csv file, and insert row in db file.
 
@@ -24,12 +20,18 @@ def load_csv(path, cursor):
             insert_csv_row(line, cursor)
             line = f.readline()
     # logging.info('load_csv: Charge la base de données')
+
+
+
+
 def update_db(csv_url, outputfile):
     """This function, retrieve the csv from url and download this csv file
 
     """
     urllib.request.urlretrieve(csv_url, outputfile)
     # logging.info('update_db: Mise a jour de la base de données')
+
+
 
 def insert_csv_row(csv_row, cursor):
     """ This function insert values in table 'infoarret'
@@ -45,9 +47,13 @@ def insert_csv_row(csv_row, cursor):
     cursor.execute("""INSERT INTO infoarret VALUES (?,?,?,?,?) """,new_row)
 
 
+
+
 # def list_ville(index):
 #     list_ville = ['Montpellier','Rennes','Toulouse', 'Lyon']
 #     return list_ville[index]
+
+
 
 def create_schema(cursor):
     """ This function create table 'infoarret' if not exist
@@ -72,10 +78,7 @@ def stations():
     conn = sqlite3.connect('transport.db')
     c = conn.cursor()
     c.row_factory= sqlite3.Row
-<<<<<<< HEAD
-    c.execute("""SELECT Station , Ligne  FROM infoarret""")
-=======
-    c.execute("""SELECT * FROM infoarret """)
+    c.execute("""SELECT Station,Ligne FROM infoarret """)
     result = []
     for row in c.fetchall():
         result.append(dict(row))
@@ -87,26 +90,16 @@ def next_transports(station):
     conn = sqlite3.connect('transport.db')
     c = conn.cursor()
     c.row_factory= sqlite3.Row
-    c.execute("""SELECT * FROM infoarret WHERE Station = ? """,
+    c.execute("""SELECT Station,Direction,Ligne,Horaire FROM infoarret WHERE Station = ? """,
     (station,))
->>>>>>> f2c20ae7d9e624647c00e2d7b8fa8caaae095378
     result = []
     for row in c.fetchall():
         result.append(dict(row))
-
-<<<<<<< HEAD
-def next_tram(station):
-    conn = sqlite3.connect('transport.db')
-    c = conn.cursor()
-    c.row_factory= sqlite3.Row
-    c.execute("""SELECT Station,Direction,Ligne,Horaire FROM infoarret WHERE Station = ? ORDER BY Horaire""",(station,))
-    result =[]
-    for i in c.fetchall():
-        result.append(dict(i))
+    #print(result)
     return result
+#print(next_transports("JACOU"))
 
-
-def next_line_station_direction(line,station,direction):    
+def next_line_station_direction(line,station,direction):
     conn = sqlite3.connect('transport.db')
     c = conn.cursor()
     c.row_factory= sqlite3.Row
@@ -116,12 +109,7 @@ def next_line_station_direction(line,station,direction):
         result.append(dict(i))
     return result
 
-  
 
-
-=======
-    return result
->>>>>>> f2c20ae7d9e624647c00e2d7b8fa8caaae095378
 
 
 def main():
@@ -132,11 +120,8 @@ def main():
     create_schema(c)
     load_csv('Montpellier.csv', c)
     conn.commit()
-<<<<<<< HEAD
-=======
     stations()
     next_transports('station')
->>>>>>> f2c20ae7d9e624647c00e2d7b8fa8caaae095378
     conn.commit()
 
 
