@@ -6,22 +6,11 @@ import logging
 
 
 
-def main():
-    conn = sqlite3.connect('transport.db')
-    c = conn.cursor()
-    create_schema(c)
-    if list_ville(0) == list_ville(0):
-        update_db('https://data.montpellier3m.fr/sites/default/files/ressources/TAM_MMM_TpsReel.csv', list_ville(0)+'.csv')
-        load_csv(list_ville(0)+'.csv', c, list_ville(0))
-        conn.commit()
-    if list_ville(1) == list_ville(1):
-        update_db('https://data.rennesmetropole.fr/explore/dataset/prochains-passages-des-lignes-de-metro-du-reseau-star-en-temps-reel/download/?format=csv&timezone=Europe/Berlin&lang=fr&use_labels_for_header=true&csv_separator=%3B', list_ville(1)+'.csv')
-        load_csv(list_ville(1)+'.csv', c, list_ville(1))
-        conn.commit()
 
 
 
-def load_csv(path, cursor, ville):
+
+def load_csv(path, cursor):
     """ This function load and read the csv file, and insert row in db file.
 
     cursor : It acts like a position indicator and will be mostly use to
@@ -34,7 +23,7 @@ def load_csv(path, cursor, ville):
         f.readline()
         line = f.readline()
         while line:
-            insert_csv_row(line, cursor, ville)
+            insert_csv_row(line, cursor)
             line = f.readline()
     # logging.info('load_csv: Charge la base de données')
 
@@ -50,7 +39,7 @@ def update_db(csv_url, outputfile):
 
 
 
-def insert_csv_row(csv_row, cursor, ville):
+def insert_csv_row(csv_row, cursor):
     """ This function insert values in table 'infoarret'
 
     cursor : It acts like a position indicator and will be mostly use to
@@ -59,24 +48,16 @@ def insert_csv_row(csv_row, cursor, ville):
     csv_row : retrieve the lines on the csv file.
 
     """
-    
-    if ville == 'Montpellier':
-        liste_row = csv_row.strip().split(";")
-        new_row = [liste_row[3], liste_row[4], liste_row[5], liste_row[7], ville]
-        cursor.execute("""INSERT INTO infoarret VALUES (?,?,?,?,?) """,
-                    new_row)
-    elif ville == 'Rennes':
-        liste_row = csv_row.strip().split(";")
-        horaire = ''.join(liste_row[7].split('T')[-1]).split('+')[0]
-        new_row = [liste_row[5], liste_row[1], liste_row[3], horaire, ville]
-        cursor.execute("""INSERT INTO infoarret VALUES (?,?,?,?,?) """,
-                    new_row)
+    liste_row = csv_row.strip().split(";")
+    new_row = [liste_row[3], liste_row[4], liste_row[5], liste_row[7], "Montpellier"]
+    cursor.execute("""INSERT INTO infoarret VALUES (?,?,?,?,?) """,new_row)
 
 
 
-def list_ville(index):
-    list_ville = ['Montpellier','Rennes','Toulouse', 'Lyon']
-    return list_ville[index]
+
+# def list_ville(index):
+#     list_ville = ['Montpellier','Rennes','Toulouse', 'Lyon']
+#     return list_ville[index]
 
 
 
@@ -99,7 +80,27 @@ def create_schema(cursor):
     "Ville" TEXT
     );""")
 
+def stations(database,cursor, station):
 
+    cursor.execute("""SELECT * FROM infoarret WHERE Station = ? """,
+    (station,))
+    result = []
+    for row in cursor.fetchall():
+        result.append(dict(row))
+    return (result)
+
+
+
+def main():
+    conn = sqlite3.connect('transport.db')
+    c = conn.cursor()
+    c.row_factory= sqlite3.Row
+    update_db('https://data.montpellier3m.fr/sites/default/files/ressources/TAM_MMM_TpsReel.csv', 'Montpellier.csv')
+    create_schema(c)
+    load_csv('Montpellier.csv', c)
+    conn.commit()
+    stations('transport.db',c,"JACOU")
+    conn.commit()
 
 
 
