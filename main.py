@@ -4,12 +4,6 @@ import sys
 from flask import render_template
 import logging
 
-
-
-
-
-
-
 def load_csv(path, cursor):
     """ This function load and read the csv file, and insert row in db file.
 
@@ -80,15 +74,29 @@ def create_schema(cursor):
     "Ville" TEXT
     );""")
 
-def stations(database,cursor, station):
+def stations():
+    conn = sqlite3.connect('transport.db')
+    c = conn.cursor()
+    c.row_factory= sqlite3.Row
+    c.execute("""SELECT * FROM infoarret """)
+    result = []
+    for row in c.fetchall():
+        result.append(dict(row))
+    #print(result)
+    return result
 
-    cursor.execute("""SELECT * FROM infoarret WHERE Station = ? """,
+#print(stations('transport.db',.cursor(), 'JACOU'))
+def next_transports(station):
+    conn = sqlite3.connect('transport.db')
+    c = conn.cursor()
+    c.row_factory= sqlite3.Row
+    c.execute("""SELECT * FROM infoarret WHERE Station = ? """,
     (station,))
     result = []
-    for row in cursor.fetchall():
+    for row in c.fetchall():
         result.append(dict(row))
-    return (result)
 
+    return result
 
 
 def main():
@@ -99,9 +107,9 @@ def main():
     create_schema(c)
     load_csv('Montpellier.csv', c)
     conn.commit()
-    stations('transport.db',c,"JACOU")
+    stations()
+    next_transports('station')
     conn.commit()
-
 
 
 if __name__ == "__main__":
