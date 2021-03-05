@@ -4,7 +4,10 @@ import sys
 from flask import render_template
 import logging
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> f2c20ae7d9e624647c00e2d7b8fa8caaae095378
 def load_csv(path, cursor):
     """ This function load and read the csv file, and insert row in db file.
 
@@ -69,12 +72,29 @@ def stations():
     conn = sqlite3.connect('transport.db')
     c = conn.cursor()
     c.row_factory= sqlite3.Row
+<<<<<<< HEAD
     c.execute("""SELECT Station , Ligne  FROM infoarret""")
+=======
+    c.execute("""SELECT * FROM infoarret """)
     result = []
     for row in c.fetchall():
         result.append(dict(row))
-    return (result)
+    #print(result)
+    return result
 
+#print(stations('transport.db',.cursor(), 'JACOU'))
+def next_transports(station):
+    conn = sqlite3.connect('transport.db')
+    c = conn.cursor()
+    c.row_factory= sqlite3.Row
+    c.execute("""SELECT * FROM infoarret WHERE Station = ? """,
+    (station,))
+>>>>>>> f2c20ae7d9e624647c00e2d7b8fa8caaae095378
+    result = []
+    for row in c.fetchall():
+        result.append(dict(row))
+
+<<<<<<< HEAD
 def next_tram(station):
     conn = sqlite3.connect('transport.db')
     c = conn.cursor()
@@ -99,6 +119,9 @@ def next_line_station_direction(line,station,direction):
   
 
 
+=======
+    return result
+>>>>>>> f2c20ae7d9e624647c00e2d7b8fa8caaae095378
 
 
 def main():
@@ -109,8 +132,12 @@ def main():
     create_schema(c)
     load_csv('Montpellier.csv', c)
     conn.commit()
+<<<<<<< HEAD
+=======
+    stations()
+    next_transports('station')
+>>>>>>> f2c20ae7d9e624647c00e2d7b8fa8caaae095378
     conn.commit()
-
 
 
 if __name__ == "__main__":
