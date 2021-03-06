@@ -99,15 +99,25 @@ def next_transports(station):
     return result
 #print(next_transports("JACOU"))
 
-def next_line_station_direction(line,station,direction):
+def next_line_station_direction(args1,args2,args3):
     conn = sqlite3.connect('transport.db')
     c = conn.cursor()
     c.row_factory= sqlite3.Row
-    c.execute("""SELECT * FROM infoarret WHERE Ligne=? AND Station=? AND Direction=? ORDER BY Horaire""",(line,station,direction,))
+    c.execute("""SELECT * FROM infoarret WHERE Ligne=? AND Station=? AND Direction=? ORDER BY Horaire""",(args1,args2,args3,))
     result =[]
     for i in c.fetchall():
         result.append(dict(i))
     return result
+
+    # def next_line_station_direction(line,station,direction):
+    # conn = sqlite3.connect('transport.db')
+    # c = conn.cursor()
+    # c.row_factory= sqlite3.Row
+    # c.execute("""SELECT * FROM infoarret WHERE Ligne=? AND Station=? AND Direction=? ORDER BY Horaire""",(line,station,direction,))
+    # result =[]
+    # for i in c.fetchall():
+    #     result.append(dict(i))
+    # return result
 
 
 
