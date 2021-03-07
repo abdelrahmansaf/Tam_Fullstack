@@ -78,10 +78,14 @@ def stations():
     conn = sqlite3.connect('transport.db')
     c = conn.cursor()
     c.row_factory= sqlite3.Row
-    c.execute("""SELECT Station,Ligne FROM infoarret """)
+    c.execute("""SELECT Station,Ligne,Direction FROM infoarret """)
     result = []
     for row in c.fetchall():
         result.append(dict(row))
+    f = open("station_file_1.py", "w+")
+    str_result = repr(result)
+    f.write("result1 = " + str_result + "\n")
+    f.close()
     #print(result)
     return result
 
