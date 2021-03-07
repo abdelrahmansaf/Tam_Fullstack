@@ -89,7 +89,6 @@ def stations():
     #print(result)
     return result
 
-#print(stations('transport.db',.cursor(), 'JACOU'))
 def next_transports(station):
     conn = sqlite3.connect('transport.db')
     c = conn.cursor()
@@ -99,9 +98,12 @@ def next_transports(station):
     result = []
     for row in c.fetchall():
         result.append(dict(row))
+    f = open("station_file_2.py", "w+")
+    str_result = repr(result)
+    f.write("result2 = " + str_result + "\n")
+    f.close()
     #print(result)
     return result
-#print(next_transports("JACOU"))
 
 def next_line_station_direction(args1,args2,args3):
     conn = sqlite3.connect('transport.db')
