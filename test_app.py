@@ -28,6 +28,7 @@ class TestApiFlask(unittest.TestCase):
         result = self.app.get('/stations')
         self.assertTrue(b'Ligne'in result.data)
         self.assertFalse(b'Bonjour'in result.data)
+        self.assertTrue(b'Station'in result.data)
     
 
     def test_home_by_country(self):
