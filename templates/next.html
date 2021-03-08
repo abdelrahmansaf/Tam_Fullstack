@@ -6,4 +6,16 @@
     {% for blog1 in blogs1 %}
         {{ components.blog1(blog1["Direction"], blog1["Ligne"], blog1["Station"], blog1["Horaire"]) }}
     {% endfor %}
+    <script>
+        var str = window.location.href;
+        var res = str.split("/");
+        var get =res[4];
+        if (localStorage.getItem(get) === null) {
+            setInterval(function(){ 
+                localStorage.clear();
+                localStorage.setItem(get,"exist");
+                document.location.reload();
+            }, 1000);
+    }
+    </script>
 {% endblock %}

@@ -2,16 +2,17 @@
 {% import "components.html" as components %}
     {% block body %}
     <script>
+    
         function getValue(){
             var x = document.getElementById('foo').value;
-            var newlink = window.location.href + '/next/' +  x;
+            var newlink = window.location.href + 'next/' +  x;
             window.location.replace(newlink);
         }
         function SendValue(){
             var line = document.getElementById('ligne').value;
             var sta = document.getElementById('station').value;
             var dir = document.getElementById('direction').value;
-            var newlink = window.location.href + '/next?Ligne=' +  line + '&Station=' +  sta + '&Direction=' + dir;
+            var newlink = window.location.href + 'next?Ligne=' +  line + '&Station=' +  sta + '&Direction=' + dir;
 
             window.location.replace(newlink);
         }
