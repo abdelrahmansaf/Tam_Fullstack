@@ -1,0 +1,9 @@
+{% extends 'base.html' %}
+{% import "components.html" as components %}
+
+{% block body %}
+
+    {% for blog1 in blogs1 %}
+        {{ components.blog1(blog1["Direction"], blog1["Ligne"], blog1["Station"], blog1["Horaire"]) }}
+    {% endfor %}
+{% endblock %}

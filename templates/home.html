@@ -1,0 +1,62 @@
+{% extends 'base.html' %}
+{% import "components.html" as components %}
+    {% block body %}
+    <script>
+        function getValue(){
+            var x = document.getElementById('foo').value;
+            var newlink = window.location.href + '/next/' +  x;
+            window.location.replace(newlink);
+        }
+        function SendValue(){
+            var line = document.getElementById('ligne').value;
+            var sta = document.getElementById('station').value;
+            var dir = document.getElementById('direction').value;
+            var newlink = window.location.href + '/next?Ligne=' +  line + '&Station=' +  sta + '&Direction=' + dir;
+
+            window.location.replace(newlink);
+        }
+        function show(){
+            var z = document.getElementById('show');
+            z.style.display = "block";
+            var xz = document.getElementById('show2');
+            xz.style.display = "none";
+        }
+        function show2(){
+            var z = document.getElementById('show2');
+            z.style.display = "block";
+            var zz = document.getElementById('show');
+            zz.style.display = "none";
+        }
+    </script>
+    <section id="intro" class="wrapper style1 fullscreen fade-up">
+        <div class="inner">
+            <h1>Station-TAM</h1>
+            <p>Exploiter l’opendata des horaires de <br />
+                transports : version fullstack / par Abdulrahman, Sêlêm, Yanis</p>
+            <ul class="actions">
+                <li><a href="http://127.0.0.1:5000/stations" class="button scrolly">Liste Stations</a></li>
+                <li><button onclick="show()" class="button scrolly">Liste Passage JACOU</button></li>
+                <li><button onclick="show2()" class="button scrolly">Liste Passage Ligne 22 JACOU UNIVERSITES</a></li>
+            </ul>
+            <div id="show" style="display:none;">
+            Veuillez entrer une station ici : <input type="text" id="foo" value="" />
+            <button onclick="getValue()">Get Value</button>
+            </div>
+
+            <div id="show2" style="display:none;">
+
+                Veuillez entrer une station ici : 
+                <label for="ligne">Ligne</label>
+                <input type="text" id="ligne"  />
+                <label for="station">Station</label>
+                <input type="text" id="station" />
+                <label for="direction">Direction</label>
+                <input type="text" id="direction"/>
+                <button onclick="SendValue()">Get Value</button>
+                
+            </div>
+                   
+
+        </div>
+    </section>
+    {% endblock %}
