@@ -5,10 +5,15 @@ from station_file_1 import result1
 from station_file_2 import result2
 from flask_cors import CORS
 import sqlite3
+from main import main, update_db, load_csv, create_schema, insert_csv_row
+from apscheduler.schedulers.background import BackgroundScheduler
+sched = BackgroundScheduler(daemon=True)
+sched.add_job(main,'interval',seconds= 59)
+sched.start()
 app = Flask(__name__)
 
 
-
+main()
 @app.route('/')
 def home():
     return render_template('index.html')
@@ -41,4 +46,4 @@ def next_infos():
 
 
 if __name__ == '__main__':
-    app.run(host="0.0.0.0", port="5000", debug=True)
+    app.run(host="127.0.0.1", port="5000", debug=True)
