@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Search By Dir-Stat-ligne</title>
+</head>
+<body>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@300&display=swap');
+    *{
+      font-family: 'Open Sans', sans-serif;
+      color: rgb(241, 241, 241);
+    }
+  body{
+    background: rgb(37, 37, 37);
+  }
+    div{
+      width: 30%;
+      margin: 1%;
+      padding: 0.5%;
+      float: left;
+      background: rgb(24, 24, 24);
+      border-radius: 12px;
+      box-shadow: 0 0 10px rgb(151 7 144 / 57%);
+    }
+    section{
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    section input[type=text]{
+      width: 250px;
+      background: #1f1f1f;
+      border: 1px solid #969696;
+      padding: 5px;
+      margin: 0px 10px;
+      color: white;
+  }
+  button{
+    background: #841480;
+      border: none;
+      height: 30px;
+      border-radius: 12px;
+      padding: 5px 20px;
+      text-transform: uppercase;
+      font-weight: 500;
+  }
+  button:hover{
+    background: #b31dae;
+  } 
+    </style>
+  <section>
+    <input type="text" placeholder="Which Line?" name="line" id="line">
+    <input type="text" placeholder="Your Station Name" name="station" id="station">
+    <input type="text" placeholder="The Destination Name" name="direction" id="direction">
+    <button id="search">Search</button>
+  </section>
+  <ul id="search_"></ul>
+
+  <script>    
+function queryNext(station) {
+  fetch(`http://127.0.0.1:5000/next?Ligne=${line}&Station=${station}&Direction=${direction}`) 
+  .then(function(response) {
+    return response.json();
+  }).then(function(json) {
+    console.log(json);
+    
+    domList = document.querySelector('ul#search_');
+    console.log(domList)
+
+    json.forEach(element => {
+        console.log(element.Direction);
+        console.log(element.Horaire)
+        console.log(element.Ligne)
+        console.log(element.Station)
+        
+        newElement = document.createElement('div') 
+        newElement.innerHTML = `
+        <ul>${element.Ligne}</ul>
+        <ul>${element.Station}</ul> 
+        <ul> ${element.Direction}</ul> 
+        <ul>${element.Horaire}</ul> `;
+        domList.appendChild(newElement)
+        });
+        
+    });
+  }
+    document.querySelector('button#search').addEventListener('click', (event) => {
+        line = document.querySelector('input#line').value;
+        console.log(`line: ${line}`);
+        station = document.querySelector('input#station').value;
+        console.log(`station: ${station}`);
+        direction = document.querySelector('input#direction').value;
+        console.log(`direction: ${direction}`);
+        queryNext(station);
+        document.getElementById("search_").innerHTML = "";
+    });
+
+</script>
+</body>
+</html>
