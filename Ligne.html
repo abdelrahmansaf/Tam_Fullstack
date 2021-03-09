@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Stations</title>
+</head>
+<body>
+  <ul id="Ligne"></ul>
+  <script>
+    page = 1
+    fetch(`http://127.0.0.1:5000/Ligne`)
+    .then(function(response) {
+      return response.json();
+    }).then(function(json) {
+      console.log(json);
+      
+      domList = document.querySelector('ul#Ligne');
+      console.log(domList)
+      
+      json.forEach(element => {
+        console.log(element.Ligne);
+        
+        newElement = document.createElement('li')
+        newElement.innerText = element.Ligne
+        domList.appendChild(newElement)
+      });
+    });
+</script>
+</body>
+</html>
