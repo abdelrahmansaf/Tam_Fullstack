@@ -5,7 +5,7 @@ import logging
 import os.path
 from os import path
 
-
+""" This main function that allows you to create a DataBase and download the csv file from the TAM website """
 def main():
     conn = sqlite3.connect('transport.db')
     c = conn.cursor()
